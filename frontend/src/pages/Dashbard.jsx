@@ -4,11 +4,13 @@ import Balance from '../components/Balance'
 import Users from '../components/Users'
 import { useState,useEffect } from 'react'
 import axios from 'axios'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 function Dashbard() {
   const [balance,setBalance]=useState(0);
   const [users,setUsers]=useState([]);
   const [search,setSearch]=useState("");
+  const navigate=useNavigate();
   useEffect(()=>{
     const fetchBalance= async ()=>{
       const authToken="Bearer" +" " + localStorage.getItem("token");
@@ -28,11 +30,18 @@ function Dashbard() {
           filter:search
         }
       })
-      setUsers(res.data.user);
+      setUsers(res.data.users);
     }
     catch(err){
       console.log(err);
     }
+  }
+
+  const handleTransfer=async (userId,firstName)=>{
+        const params=new URLSearchParams();
+        params.append("userId",userId);
+        params.append('firstname',firstName);
+        navigate(`/transfer?${params.toString()}`);
   }
   return (
     <div>
@@ -50,8 +59,8 @@ function Dashbard() {
         <ul className='text-lg ml-3 w-[50vw] font-medium'>
         {users.map(user => (
           <li key={user._id} className='w-full flex mb-3'>
-            <p className='w-[40%]'>{user.firstname}</p>
-            <button  className='bg-slate-700 text-white px-2 hover:bg-black cursor-pointer'>Transfer Money</button>
+            <p className='w-[40%]'>{user.firstName}</p>
+            <button  className='bg-slate-700 text-white px-2 hover:bg-black cursor-pointer' onClick={()=>{handleTransfer(user._id,user.firstName)}}>Transfer Money</button>
           </li>
         ))}
       </ul>

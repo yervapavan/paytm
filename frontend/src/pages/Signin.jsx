@@ -13,7 +13,7 @@ function Signin() {
   const [errorMessage,seterrorMessage]=useState("");
   const handleSignin=async ()=>{
     try{
-    const response=await axios.post("http://localhost:3000/api/v1/user/signin",{
+    const response=await axios.post("http://localhost:3000/api/v1/account/transfer",{
       username,
       password,
     })
@@ -33,7 +33,6 @@ function Signin() {
   return (
     <div className='h-[100vh] flex justify-items-center justify-center'>
       <div className='flex flex-col justify-center'>
-      <AppBar PayU={"PayU"}/>
         <div className="rounded-lg bg-white w-80 text-center p-2 h-max px-4 shadow-md">
           
             <Heading label={"sign in"}/>
